@@ -10,7 +10,6 @@ env/
 data/
 the_stack_cpp/
 cpp_samples/
-*.jsonl
 
 # Python cache
 __pycache__/

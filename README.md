@@ -20,3 +20,4 @@ python extract_functions.py
 ```
 
 Output will be saved to `data/data_cpp.jsonl`. 
+`example_output.jsonl` shows what pulled data will look like. The main features we care about are the input_text and target_text fields. 
