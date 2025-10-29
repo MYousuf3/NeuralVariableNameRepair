@@ -160,9 +160,10 @@ def main():
                 (SAVE_CPP_DIR / f"row_{i:06d}.cpp").write_text(content, encoding="utf-8")
                 saved_cpp += 1
 
-            # Extract functions from this row
+            # Extract functions from this row (only use first function per file)
             rows = extract_functions_from_source(content, file_tag=f"row_{i:06d}")
-            for r in rows:
+            if rows:  # Only process if we found at least one function
+                r = rows[0]  # Take only the first function from this file
                 fw.write(json.dumps(r, ensure_ascii=False) + "\n")
                 written += 1
                 pbar.update(1)  # Update progress bar
