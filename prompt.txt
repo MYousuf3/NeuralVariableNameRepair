@@ -1,0 +1,9 @@
+Examine the given code snippet. Read through it and map each example of <ID_x> to a replacement variable name. Respond ONLY in a json format mapping each to its other.
+Ex:
+[
+    {
+        <ID_1> : num_var,
+        <ID_2> : length
+    }
+]
+
