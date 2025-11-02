@@ -1,9 +1,5 @@
-Examine the given code snippet. Read through it and map each example of <ID_x> to a replacement variable name. Respond ONLY in a json format mapping each to its other.
-Ex:
-[
-    {
-        <ID_1> : num_var,
-        <ID_2> : length
-    }
-]
+Examine the given code snippet. Read through it and map each <ID_x> placeholder to the original variable name. Respond ONLY in JSON format with the mapping.
+
+Example:
+{"<ID_1>": "num_var", "<ID_2>": "length"}
 

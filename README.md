@@ -22,9 +22,40 @@ python extract_functions.py
 
 Output is saved to `data/data_cpp.jsonl` (sample in `example_output.jsonl`).
 
+## Testing
+
+```bash
+# Test with 2 samples
+python run_inference.py --data example_output.jsonl --max-samples 2
+
+# Check outputs
+cat llm_responses.jsonl
+cat evaluation_results.json
+```
+
+**Note:** First run downloads Llama 3.1 8B (~16GB). Requires GPU with sufficient VRAM.
+
 ## Usage
 
-### Load Data & Evaluate Predictions
+### Run Inference with vLLM
+
+```bash
+# Run on sample data (5 examples)
+python run_inference.py --data example_output.jsonl
+
+# Run on full dataset
+python run_inference.py --data data/data_cpp.jsonl
+
+# Customize parameters
+python run_inference.py \
+    --data data/data_cpp.jsonl \
+    --model meta-llama/Meta-Llama-3.1-8B-Instruct \
+    --max-samples 100 \
+    --temperature 0.0 \
+    --tensor-parallel-size 1
+```
+
+### Programmatic Usage
 
 ```python
 from data_pipeline import DataPipeline
@@ -35,8 +66,8 @@ pipeline = DataPipeline('example_output.jsonl')
 pipeline.load_data()
 input_texts, target_texts = pipeline.get_separate_arrays()
 
-# Assume LLM responses are retrieved, TODO
-llm_responses = [llm(text) for text in input_texts]
+# Get LLM responses (see run_inference.py for full implementation)
+# llm_responses = [llm(text) for text in input_texts]
 
 # Evaluate
 evaluator = PredictionEvaluator()
