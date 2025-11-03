@@ -125,7 +125,7 @@ def run_inference(
         for result in results:
             f.write(json.dumps(result, ensure_ascii=False) + '\n')
     
-    print(f"\n✓ Saved {len(results)} responses to {output_file}")
+    print(f"\n Saved {len(results)} responses to {output_file}")
     
     return results
 
