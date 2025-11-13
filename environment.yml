@@ -10,5 +10,7 @@ dependencies:
   - pip:
       - datasets>=3.0.0
       - huggingface_hub>=0.24.0
+      - transformers>=4.40.0
       - tree-sitter==0.20.4
       - tree-sitter-languages==1.10.2
+      - tinker
