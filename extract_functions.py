@@ -27,7 +27,7 @@ SAVE_CPP_N     = 20                   # save first N .cpp files (set 0 to skip)
 EXAMPLE_JSONL  = Path("example_output.jsonl")  # small example for GitHub
 EXAMPLE_N      = 5                    # number of examples to save
 OUTPUT_JSONL   = Path("data/data_cpp.jsonl")
-MAX_FUNCS      = 3000                  # stop after writing this many functions
+MAX_FUNCS      = 30000                  # stop after writing this many functions
 DEBUG          = True                 # print small progress
 # =================================================
 
@@ -101,13 +101,12 @@ def collect_local_names(func: Node, src: bytes) -> list[str]:
                     names.add(nm)
     return sorted(names)
 
-def mask_names(text: str, names: list[str]) -> tuple[str, dict]:
-    mapping, masked = {}, text
-    names = sorted(names, key=len, reverse=True)
-    for i, nm in enumerate(names, 1):
-        ph = f"<ID_{i}>"; mapping[ph] = nm
-        pat = r"(?<![A-Za-z0-9_])" + re.escape(nm) + r"(?![A-Za-z0-9_])"
-        masked = re.sub(pat, ph, masked)
+def mask_single_name(text: str, name: str) -> tuple[str, dict]:
+    """Mask a single variable name with <ID_1>"""
+    ph = "<ID_1>"
+    mapping = {ph: name}
+    pat = r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])"
+    masked = re.sub(pat, ph, text)
     return masked, mapping
 
 def extract_functions_from_source(source_text: str, file_tag: str):
@@ -122,13 +121,18 @@ def extract_functions_from_source(source_text: str, file_tag: str):
         if not names:  # skip functions with no identifiers to rename
             continue
         func_txt = node_text(src, fn)
-        masked, mapping = mask_names(func_txt, names)
-        out.append({
-            "file": file_tag,
-            "func_name": get_func_name(fn, src) or "",
-            "input_text": masked,
-            "target_text": json.dumps(mapping, ensure_ascii=False),
-        })
+        func_name = get_func_name(fn, src) or ""
+        
+        # Create one example for each variable name found
+        # Each example masks only ONE variable
+        for name in names:
+            masked, mapping = mask_single_name(func_txt, name)
+            out.append({
+                "file": file_tag,
+                "func_name": func_name,
+                "input_text": masked,
+                "target_text": json.dumps(mapping, ensure_ascii=False),
+            })
     return out
 # ---------------------------------------
 

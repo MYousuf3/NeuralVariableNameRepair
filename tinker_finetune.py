@@ -11,13 +11,14 @@ from tinker import types
 # Hard coded config
 # =========================
 
-TRAIN_PATH = "data_cpp.jsonl"  # JSONL file in current directory
+TRAIN_PATH = "data/data_cpp.jsonl"  # JSONL file path
 BASE_MODEL = "meta-llama/Llama-3.1-8B"
-LEARNING_RATE = 1e-4
+LEARNING_RATE = 2e-4
 BATCH_SIZE = 8
-NUM_STEPS = 50
-PRINT_EVERY = 10
-MAX_EXAMPLES = None      # Set to an int if you want to cap dataset size
+NUM_STEPS = 1000
+PRINT_EVERY = 50
+MAX_EXAMPLES = None      # Set to an int if you  want to cap dataset size
+MAX_SEQ_LENGTH = 8192    # Max tokens per example (Tinker limit is 32768, use conservative value)
 SEED = 42
 SAVE_NAME = "cpp-var-name-model"
 
@@ -97,13 +98,15 @@ def build_prompt(code: str, mask_token: str) -> str:
     return prompt
 
 
-def process_example(example: dict, tokenizer) -> types.Datum:
+def process_example(example: dict, tokenizer, max_seq_length: int) -> types.Datum:
     """
     Convert one example into a Tinker Datum.
 
     We set loss weight:
       0 for all prompt tokens
       1 for the variable name tokens
+      
+    Returns None if the example exceeds max_seq_length.
     """
     code = example["code"]
     mask_token = example["mask_token"]
@@ -123,6 +126,10 @@ def process_example(example: dict, tokenizer) -> types.Datum:
     tokens = prompt_tokens + completion_tokens
     weights = prompt_weights + completion_weights
 
+    # Check if sequence is too long
+    if len(tokens) > max_seq_length:
+        return None
+
     # Next token prediction format
     input_tokens = tokens[:-1]
     target_tokens = tokens[1:]
@@ -137,8 +144,25 @@ def process_example(example: dict, tokenizer) -> types.Datum:
     )
 
 
-def make_datums(raw_data, tokenizer):
-    return [process_example(ex, tokenizer) for ex in raw_data]
+def make_datums(raw_data, tokenizer, max_seq_length):
+    """
+    Convert raw examples to Tinker Datums, filtering out sequences that are too long.
+    """
+    datums = []
+    filtered_count = 0
+    
+    for ex in raw_data:
+        datum = process_example(ex, tokenizer, max_seq_length)
+        if datum is not None:
+            datums.append(datum)
+        else:
+            filtered_count += 1
+    
+    if filtered_count > 0:
+        print(f"Filtered out {filtered_count} examples that exceeded {max_seq_length} tokens")
+        print(f"Kept {len(datums)} examples for training")
+    
+    return datums
 
 
 def train(training_client, datums, learning_rate, batch_size, num_steps, print_every):
@@ -239,8 +263,13 @@ def main():
     tokenizer = training_client.get_tokenizer()
 
     print("Converting examples to Tinker datums...")
-    datums = make_datums(raw_data, tokenizer)
+    datums = make_datums(raw_data, tokenizer, MAX_SEQ_LENGTH)
     print(f"Prepared {len(datums)} datums")
+    
+    if len(datums) < BATCH_SIZE:
+        raise ValueError(
+            f"Not enough training examples after filtering: {len(datums)} < batch_size {BATCH_SIZE}"
+        )
 
     print("Starting training...")
     train(
