@@ -19,9 +19,9 @@ import torch
 # Hard coded config
 # =========================
 
-VALIDATION_PATH = "data/data_cpp.jsonl"  # JSONL file path
+VALIDATION_PATH = "data/validate_cpp.jsonl"  # JSONL file path
 BASE_MODEL = "meta-llama/Llama-3.1-8B"
-CHECKPOINT_URL = "tinker://ca272a9b-69f0-500f-b444-a806805acac9:train:0/sampler_weights/proj-final"
+CHECKPOINT_URL = "tinker://16f6a69b-04a7-58bf-8c41-a72b41828beb:train:0/sampler_weights/proj-final"
 NUM_VALIDATION_EXAMPLES = 200
 VALIDATION_OFFSET = 300  # Start from this index in the dataset
 MAX_SEQ_LENGTH = 8192    # Max tokens per example (should match training)
