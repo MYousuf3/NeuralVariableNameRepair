@@ -12,10 +12,10 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 # --- HF auth from .env ---
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from huggingface_hub import login
-load_dotenv()  # loads HF_TOKEN from .env in current working dir
-HF_TOKEN = os.getenv("HF_TOKEN")
+# load_dotenv()  # loads HF_TOKEN from .env in current working dir
+HF_TOKEN = "<REDACTED_HF_TOKEN>"
 if not HF_TOKEN:
     raise RuntimeError("HF_TOKEN not found in .env. Add a line like: HF_TOKEN=hf_XXXXXXXX")
 login(token=HF_TOKEN)

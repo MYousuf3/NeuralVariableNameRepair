@@ -1,0 +1,95 @@
+{
+  "summary": {
+    "total_examples": 500,
+    "evaluated": 499,
+    "skipped": 1,
+    "exact_matches": 205,
+    "exact_accuracy": 41.08216432865731,
+    "top5_matches": 270,
+    "top5_accuracy": 54.10821643286573,
+    "partial_score_avg": 81.15153269520783
+  },
+  "checkpoints_every_50_samples": [
+    {
+      "samples": 50,
+      "skipped": 0,
+      "exact_matches": 22,
+      "exact_accuracy": 44.0,
+      "top5_matches": 29,
+      "top5_accuracy": 57.99999999999999,
+      "partial_score_avg": 82.25236225873232
+    },
+    {
+      "samples": 100,
+      "skipped": 0,
+      "exact_matches": 40,
+      "exact_accuracy": 40.0,
+      "top5_matches": 54,
+      "top5_accuracy": 54.0,
+      "partial_score_avg": 81.79053551331162
+    },
+    {
+      "samples": 150,
+      "skipped": 0,
+      "exact_matches": 65,
+      "exact_accuracy": 43.333333333333336,
+      "top5_matches": 83,
+      "top5_accuracy": 55.333333333333336,
+      "partial_score_avg": 82.81732991710305
+    },
+    {
+      "samples": 200,
+      "skipped": 0,
+      "exact_matches": 83,
+      "exact_accuracy": 41.5,
+      "top5_matches": 108,
+      "top5_accuracy": 54.0,
+      "partial_score_avg": 81.54118710104376
+    },
+    {
+      "samples": 250,
+      "skipped": 1,
+      "exact_matches": 102,
+      "exact_accuracy": 40.8,
+      "top5_matches": 135,
+      "top5_accuracy": 54.0,
+      "partial_score_avg": 81.05058974698186
+    },
+    {
+      "samples": 300,
+      "skipped": 1,
+      "exact_matches": 126,
+      "exact_accuracy": 42.0,
+      "top5_matches": 163,
+      "top5_accuracy": 54.333333333333336,
+      "partial_score_avg": 81.22456626077958
+    },
+    {
+      "samples": 350,
+      "skipped": 1,
+      "exact_matches": 143,
+      "exact_accuracy": 40.85714285714286,
+      "top5_matches": 188,
+      "top5_accuracy": 53.714285714285715,
+      "partial_score_avg": 80.81247694773732
+    },
+    {
+      "samples": 400,
+      "skipped": 1,
+      "exact_matches": 166,
+      "exact_accuracy": 41.5,
+      "top5_matches": 218,
+      "top5_accuracy": 54.50000000000001,
+      "partial_score_avg": 81.13304520849488
+    },
+    {
+      "samples": 450,
+      "skipped": 1,
+      "exact_matches": 186,
+      "exact_accuracy": 41.333333333333336,
+      "top5_matches": 246,
+      "top5_accuracy": 54.666666666666664,
+      "partial_score_avg": 81.18874035514374
+    }
+  ]
+}

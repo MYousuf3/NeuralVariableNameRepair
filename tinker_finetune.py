@@ -14,8 +14,8 @@ from tinker import types
 TRAIN_PATH = "data/data_cpp.jsonl"  # JSONL file path
 BASE_MODEL = "meta-llama/Llama-3.1-8B"
 LEARNING_RATE = 2e-4
-BATCH_SIZE = 8
-NUM_STEPS = 1000
+BATCH_SIZE = 16
+NUM_STEPS = 10000
 PRINT_EVERY = 50
 MAX_EXAMPLES = None      # Set to an int if you  want to cap dataset size
 MAX_SEQ_LENGTH = 8192    # Max tokens per example (Tinker limit is 32768, use conservative value)
@@ -280,6 +280,10 @@ def main():
         num_steps=NUM_STEPS,
         print_every=PRINT_EVERY,
     )
+
+    print("Training complete! Saving final checkpoint...")
+    ckpt = training_client.save_weights_for_sampler(name=f"proj-final").result()
+    print(f"Final checkpoint saved at {ckpt}")
 
     print("Saving weights and creating sampling client...")
     sampling_client, predict_name = build_sampling_client(
