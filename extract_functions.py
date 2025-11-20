@@ -15,7 +15,7 @@ from tqdm import tqdm
 # from dotenv import load_dotenv
 from huggingface_hub import login
 # load_dotenv()  # loads HF_TOKEN from .env in current working dir
-HF_TOKEN = "<REDACTED_HF_TOKEN>"
+HF_TOKEN = "<enter-hf-token>"
 if not HF_TOKEN:
     raise RuntimeError("HF_TOKEN not found in .env. Add a line like: HF_TOKEN=hf_XXXXXXXX")
 login(token=HF_TOKEN)
